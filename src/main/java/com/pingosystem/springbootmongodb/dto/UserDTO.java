@@ -17,7 +17,7 @@ public class UserDTO  implements Serializable {
 	//constructor to instantiate after entity object correspondent
 	public UserDTO(User obj){
 		id  = obj.getId();
-		name = obj.getEmail();
+		name = obj.getName();
 		email = obj.getEmail();
 	}
 
