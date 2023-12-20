@@ -1,5 +1,6 @@
 package com.pingosystem.springbootmongodb.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -16,5 +17,10 @@ public interface PostRepository extends MongoRepository<Post, String>{
 	@Query("{ 'title': { $regex: ?0, $options: 'i' } }") 
 	List<Post> searchTitle(String text);
 	
-	List<Post> findByTitleContainingIgnoreCase(String text); //Ignoring UPPER or DOW Case
+	//Ignoring UPPER or DOW Case
+	List<Post> findByTitleContainingIgnoreCase(String text); 
+	
+	//minDate ?1 maxDate ?2 comments is a List, to access the text it stay === comments.text
+	@Query("{ $and: [ { date: {$gte: ?1} }, { date: { $lte: ?2} } , { $or: [ { 'title': { $regex: ?0, $options: 'i' } }, { 'body': { $regex: ?0, $options: 'i' } }, { 'comments.text': { $regex: ?0, $options: 'i' } } ] } ] }")
+	List<Post> fullSearch(String text, Date minDate, Date maxDate);
 }
